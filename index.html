@@ -14,7 +14,7 @@
         
         p {
             display: inline;
-            margin: 0 .25em;
+            /*margin: 0 .25em;*/
             color: red;
         }
         
@@ -27,22 +27,47 @@
 <body id="theBody">
     <script>
         //1) Mostrar a pantalla 5 estrelles (o l’icona que més us agradi) centrades i amb un color assignat
+
         //2) Que el color de l’estrella canvi si el mouse es posa sobre d’una d’elles
 
-        // heartRegular = '<i class="far fa-heart"></i>';
-        // heartSolid = '<i class="fas fa-heart"></i>';        
+        //3) Al moure el mouse sobre un element, que canvii els colors a tots els seus anteriors. 
+        // Si per exemple es posa el mouse a la tercera estrella, s’han de canviar de color de la 1 a la 3. 
+
+        // heartRegular = '<i class="far fa-heart"></i>'; //estructura de la etiqueta i para el icono corazón vacio
+        // heartSolid = '<i class="fas fa-heart"></i>'; //estructura de la etiqueta i para el icono corazón sólido       
         heartRegular = "far";
         heartSolid = "fas";
         heart = "fa-heart";
         fa_size = "fa-2x";
+        /* crea 5 corazones */
         for (var x = 0; x < 5; x++) {
-            var i = document.createElement("i");
-            i.classList.add(heart, fa_size, heartRegular);
-            var p = document.createElement("p");
-            p.appendChild(i);
-            var body = document.getElementById("theBody");
-            body.appendChild(p);
+            var i = document.createElement("i"); //crea el elemento i que contendrá el símbolo de corazón
+            i.classList.add(heart, fa_size, heartRegular); //le añade las clases al elemento i
+            var p = document.createElement("p"); // crea el elemento p para contener el corazón
+            p.classList.add("heart" + x); //añade la clase para poder diferenciar los corazones
+            p.appendChild(i); //añade el corazón dentro del elemento p
+            var body = document.getElementById("theBody"); //recoge el identificador del hmtl de body
+            body.appendChild(p); //le agrega el elemento p creado por código en el script
         }
+        window.addEventListener("load", function() { //al cargar la página, se mantiene a la escucha...
+            var hearts = document.getElementsByTagName("i"); //recoge todos los corazones
+            for (let i = 0; i < 5; i++) {
+                hearts[i].addEventListener("mouseover", function() { //al mover el ratón por encima...
+                    for (let x = i; x >= 0; x--) {
+                        hearts[x].style.color = "blueviolet"; //cambia el color...
+                        hearts[x].classList.remove(heartRegular); //y cambia el icono a corazón solido en lugar del vacio
+                        hearts[x].classList.add(heartSolid);
+                    }
+                });
+                hearts[i].addEventListener("mouseout", function() { // al salir el puntero del ratón, ...
+                    for (let x = i; x >= 0; x--) { //devuelve el estado de los corazones al estado por defecto
+                        hearts[x].removeAttribute("style");
+                        hearts[x].classList.remove(heartSolid);
+                        hearts[x].classList.add(heartRegular);
+                    }
+                });
+            }
+        });
     </script>
 </body>
 
