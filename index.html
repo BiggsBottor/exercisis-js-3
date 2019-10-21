@@ -31,43 +31,62 @@
         //2) Que el color de l’estrella canvi si el mouse es posa sobre d’una d’elles
 
         //3) Al moure el mouse sobre un element, que canvii els colors a tots els seus anteriors. 
-        // Si per exemple es posa el mouse a la tercera estrella, s’han de canviar de color de la 1 a la 3. 
+        // Si per exemple es posa el mouse a la tercera estrella, s’han de canviar de color de la 1 a la 3.
+
+        //4) Al premer una estrella, s’han de quedar els colors fixes a aquesta i totes les anteriors 
 
         // heartRegular = '<i class="far fa-heart"></i>'; //estructura de la etiqueta i para el icono corazón vacio
         // heartSolid = '<i class="fas fa-heart"></i>'; //estructura de la etiqueta i para el icono corazón sólido       
-        heartRegular = "far";
-        heartSolid = "fas";
-        heart = "fa-heart";
-        fa_size = "fa-2x";
+        var heartRegular = "far";
+        var heartSolid = "fas";
+        var heart = "fa-heart";
+        var fa_size = "fa-2x";
+        var body = document.getElementById("theBody"); //recoge el identificador del hmtl de body
+        var hearts = document.getElementsByTagName("i"); //recoge todos los corazones
         /* crea 5 corazones */
         for (var x = 0; x < 5; x++) {
             var i = document.createElement("i"); //crea el elemento i que contendrá el símbolo de corazón
             i.classList.add(heart, fa_size, heartRegular); //le añade las clases al elemento i
             var p = document.createElement("p"); // crea el elemento p para contener el corazón
             p.classList.add("heart" + x); //añade la clase para poder diferenciar los corazones
-            p.appendChild(i); //añade el corazón dentro del elemento p
-            var body = document.getElementById("theBody"); //recoge el identificador del hmtl de body
+            p.appendChild(i); //añade el corazón dentro del elemento p            
             body.appendChild(p); //le agrega el elemento p creado por código en el script
         }
-        window.addEventListener("load", function() { //al cargar la página, se mantiene a la escucha...
-            var hearts = document.getElementsByTagName("i"); //recoge todos los corazones
+        window.addEventListener("load", function() { //al cargar la página, se mantiene a la escucha...            
             for (let i = 0; i < 5; i++) {
                 hearts[i].addEventListener("mouseover", function() { //al mover el ratón por encima...
+                    resetHearts();
                     for (let x = i; x >= 0; x--) {
                         hearts[x].style.color = "blueviolet"; //cambia el color...
                         hearts[x].classList.remove(heartRegular); //y cambia el icono a corazón solido en lugar del vacio
                         hearts[x].classList.add(heartSolid);
                     }
                 });
-                hearts[i].addEventListener("mouseout", function() { // al salir el puntero del ratón, ...
-                    for (let x = i; x >= 0; x--) { //devuelve el estado de los corazones al estado por defecto
-                        hearts[x].removeAttribute("style");
-                        hearts[x].classList.remove(heartSolid);
-                        hearts[x].classList.add(heartRegular);
+                hearts[i].addEventListener("click", function() { //al hacer click en un corazón...
+                    for (let y = 0; y < 5; y++) { //1o elimina la clase de todos los corazones
+                        hearts[y].classList.remove("clicked");
+                    }
+                    hearts[i].classList.add("clicked"); //añade la clase clicked en el corazón pulsado
+                });
+                //si NO ha sido clicado el corazón, devolverá a los corazones a su estado por defecto
+                hearts[i].addEventListener("mouseout", function() { // al salir el puntero del ratón
+                    if (!hearts[i].classList.contains("clicked")) {
+                        for (let x = i; x >= 0; x--) {
+                            resetHearts();
+                        }
                     }
                 });
             }
         });
+
+
+        function resetHearts() { //devuelve al estado por defecto a los corazones
+            for (let y = 0; y < 5; y++) {
+                hearts[y].removeAttribute("style");
+                hearts[y].classList.remove(heartSolid);
+                hearts[y].classList.add(heartRegular);
+            }
+        }
     </script>
 </body>
 
