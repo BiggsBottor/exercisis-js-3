@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>Lletres Repetides js</title>
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+        }
+        
+        p {
+            display: inline;
+            margin: 0 .25em;
+            color: red;
+        }
+    </style>
+</head>
+
+<body id="theBody">
+    <script>
+        //1) Mostrar a pantalla 5 estrelles (o l’icona que més us agradi) centrades i amb un color assignat
+
+        // heartRegular = '<i class="far fa-heart"></i>';
+        // heartSolid = '<i class="fas fa-heart"></i>';        
+        heartRegular = "far";
+        heartSolid = "fas";
+        heart = "fa-heart";
+        fa_size = "fa-2x";
+        for (var x = 0; x < 5; x++) {
+            var i = document.createElement("i");
+            i.classList.add(heart, fa_size, heartRegular);
+            var p = document.createElement("p");
+            p.appendChild(i);
+            var body = document.getElementById("theBody");
+            body.appendChild(p);
+        }
+    </script>
+</body>
+
+</html>
