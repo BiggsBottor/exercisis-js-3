@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" id="html">
 
 <head>
     <meta charset="UTF-8">
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <title>Lletres Repetides js</title>
+    <title>Rating js</title>
     <script src='https://kit.fontawesome.com/a076d05399.js'></script>
     <style>
         body {
@@ -14,17 +14,21 @@
         
         p {
             display: inline;
-            /*margin: 0 .25em;*/
             color: red;
         }
         
         i:hover {
             color: blueviolet;
         }
+        
+        .clicked {
+            color: hotpink !important;
+        }
     </style>
 </head>
 
-<body id="theBody">
+<body id="body">
+    <div class="click-me" id="container"></div>
     <script>
         //1) Mostrar a pantalla 5 estrelles (o l’icona que més us agradi) centrades i amb un color assignat
 
@@ -35,13 +39,17 @@
 
         //4) Al premer una estrella, s’han de quedar els colors fixes a aquesta i totes les anteriors 
 
+        //5) Si es prem a una altra estrella, els colors s’han d’actualitzar correctament. 
+        // A més, si l’usuari prem fora de la zona de les estrelles, s’han de desel·leccionar totes.
+
         // heartRegular = '<i class="far fa-heart"></i>'; //estructura de la etiqueta i para el icono corazón vacio
         // heartSolid = '<i class="fas fa-heart"></i>'; //estructura de la etiqueta i para el icono corazón sólido       
         var heartRegular = "far";
         var heartSolid = "fas";
         var heart = "fa-heart";
         var fa_size = "fa-2x";
-        var body = document.getElementById("theBody"); //recoge el identificador del hmtl de body
+        var body = document.getElementById("body");
+        var container = document.getElementById("container"); //recoge el identificador del hmtl de div
         var hearts = document.getElementsByTagName("i"); //recoge todos los corazones
         /* crea 5 corazones */
         for (var x = 0; x < 5; x++) {
@@ -50,7 +58,7 @@
             var p = document.createElement("p"); // crea el elemento p para contener el corazón
             p.classList.add("heart" + x); //añade la clase para poder diferenciar los corazones
             p.appendChild(i); //añade el corazón dentro del elemento p            
-            body.appendChild(p); //le agrega el elemento p creado por código en el script
+            container.appendChild(p); //le agrega el elemento p creado por código en el script
         }
         window.addEventListener("load", function() { //al cargar la página, se mantiene a la escucha...            
             for (let i = 0; i < 5; i++) {
@@ -63,22 +71,32 @@
                     }
                 });
                 hearts[i].addEventListener("click", function() { //al hacer click en un corazón...
-                    for (let y = 0; y < 5; y++) { //1o elimina la clase de todos los corazones
-                        hearts[y].classList.remove("clicked");
-                    }
+                    //1o elimina la clase de todos los corazones
+                    resetClicked();
                     hearts[i].classList.add("clicked"); //añade la clase clicked en el corazón pulsado
                 });
                 //si NO ha sido clicado el corazón, devolverá a los corazones a su estado por defecto
                 hearts[i].addEventListener("mouseout", function() { // al salir el puntero del ratón
                     if (!hearts[i].classList.contains("clicked")) {
-                        for (let x = i; x >= 0; x--) {
-                            resetHearts();
-                        }
+                        resetHearts();
                     }
                 });
             }
+
+        });
+        document.addEventListener("click", function(event) { //en caso de pulsar en algún lugar que no sean los corazones, se resetean
+            var idElement = event.target.id;
+            if (idElement != "") {
+                resetClicked();
+                resetHearts();
+            }
         });
 
+        function resetClicked() { //elimina la clase clicked a todos los corazones
+            for (let y = 0; y < 5; y++) {
+                hearts[y].classList.remove("clicked");
+            }
+        }
 
         function resetHearts() { //devuelve al estado por defecto a los corazones
             for (let y = 0; y < 5; y++) {
